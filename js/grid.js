@@ -22,3 +22,11 @@ Grid.prototype.draw_block = function () {
   var coordinates = this.find_free_block();
   context.fillRect(coordinates[0], coordinates[1], 100, 100);
 };
+
+Grid.prototype.initialize = function (blocks) {
+  var context = this.canvas.getContext("2d");
+  context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  for(var i = 0; i <= blocks; i++) {
+    this.draw_block();
+  }
+};

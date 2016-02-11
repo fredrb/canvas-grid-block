@@ -6,14 +6,15 @@
   Your browser does not support the HTML5 canvas tag.
 </canvas>
 
+<button onclick="onUpdateClick()">Initialize grid</button>
+
 <script src="js/grid.js"></script>
+<script src="js/ui.js"></script>
 <script>
-  var grid = new Grid();
-  grid.draw_block();
-  grid.draw_block();
-  grid.draw_block();
-  grid.draw_block();
+    grid = new Grid();
+    grid.initialize(4);
 </script>
+
 
 </div>
 </body>
