@@ -10,6 +10,14 @@ var Grid = function() {
   this._initailizeGrid();
 }
 
+function getMousePosition(canvas, event) {
+  var rect = canvas.getBoundingClientRect();
+  return {
+    x: event.clientX - rect.left,
+    y: event.clientY - rect.top
+  }
+};
+
 Grid.prototype._initailizeGrid = function() {
   this.unfilled = [];
   this.filled = [];
@@ -19,7 +27,31 @@ Grid.prototype._initailizeGrid = function() {
       this.unfilled.push(block);
     }
   }
+
+  this.canvas.addEventListener('click', function(evt) {
+    var mousePos = getMousePosition(this, evt);
+    var block = grid.popFilledFrom(mousePos.x, mousePos.y);
+    if (block != null) {
+      var context = this.getContext("2d");
+      context.clearRect(block.x, block.y, block.LENGTH, block.WIDTH);
+      grid.unfilled.push(block);
+    }
+  }, false);
 }
+
+Grid.prototype.popFilledFrom = function (clickedX, clickedY) {
+  var x = this.getPrettyCoordinates(clickedX);
+  var y = this.getPrettyCoordinates(clickedY);
+  for(var block in this.filled) {
+    if (this.filled[block].x == x && this.filled[block].y == y) return new Block(x, y);
+  }
+
+  return null;
+};
+
+Grid.prototype.getPrettyCoordinates = function (num) {
+  return Math.floor(num/100)*100;
+};
 
 Grid.prototype.popRandomUnfilledBlock = function() {
   if (this.unfilled.length == 0)
