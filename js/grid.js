@@ -7,6 +7,7 @@ var Block = function(x, y) {
 
 var Grid = function() {
   this.canvas = document.getElementById("grid");
+  this.erased = 0;
   this._initailizeGrid();
 }
 
@@ -19,10 +20,11 @@ function getMousePosition(canvas, event) {
 };
 
 Grid.prototype._initailizeGrid = function() {
+  var self = this;
   this.unfilled = [];
   this.filled = [];
-  for(var row = 0; row < 4; row++) {
-    for(var column = 0; column < 4; column++) {
+  for(var row = 0; row < 5; row++) {
+    for(var column = 0; column < 5; column++) {
       var block = new Block(row*100, column*100)
       this.unfilled.push(block);
     }
@@ -34,9 +36,31 @@ Grid.prototype._initailizeGrid = function() {
     if (block != null) {
       var context = this.getContext("2d");
       context.clearRect(block.x, block.y, block.LENGTH, block.WIDTH);
+      grid.blockErased();
       grid.unfilled.push(block);
     }
   }, false);
+
+  this.autoDraw(450);
+  this.updateScreen();
+}
+
+Grid.prototype.blockErased = function() {
+  this.erased += 1;
+  this.updateScreen();
+}
+
+Grid.prototype.updateScreen = function() {
+  document.getElementById("blocks-count").innerHTML = this.erased;
+}
+
+Grid.prototype.autoDraw = function(time) {
+  var self = this;
+  if (this.unfilled.length > 0)
+    self.drawRandomBlock();
+  setTimeout(function() {
+    self.autoDraw(time);
+  }, time);
 }
 
 Grid.prototype.popFilledFrom = function (clickedX, clickedY) {
