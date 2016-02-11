@@ -6,12 +6,11 @@
   Your browser does not support the HTML5 canvas tag.
 </canvas>
 
-<b>Blocks erased: </b><i id="blocks-count"></i>
-
-<script src="js/grid.js"></script>
-<script src="js/ui.js"></script>
+<script src="js/grid/canvas.js"></script>
+<script src="js/grid/grid.js"></script>
 <script>
-    grid = new Grid();
+    grid = new Grid(5, 5);
+    grid.initAutoDraw(1250);
 </script>
 
 
