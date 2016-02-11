@@ -46,8 +46,8 @@ Grid.prototype.drawCellAt = function (x, y, content) {
 };
 
 Grid.prototype.eraseUglyCoordinatesCellAt = function (x, y) {
-  var prettyX = Math.floor(x/100);
-  var prettyY = Math.floor(y/100);
+  var prettyX = Math.floor(x/this.CELL_WIDTH);
+  var prettyY = Math.floor(y/this.CELL_HEIGHT);
 
   this.eraseCellAt(prettyX, prettyY);
 };
