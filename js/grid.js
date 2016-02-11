@@ -22,9 +22,3 @@ Grid.prototype.draw_block = function () {
   var coordinates = this.find_free_block();
   context.fillRect(coordinates[0], coordinates[1], 100, 100);
 };
-
-var grid = new Grid();
-grid.draw_block();
-grid.draw_block();
-grid.draw_block();
-grid.draw_block();
