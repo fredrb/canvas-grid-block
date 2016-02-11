@@ -1,32 +1,44 @@
+var Block = function(x, y) {
+  this.x = x;
+  this.y = y;
+  this.LENGTH = 100;
+  this.WIDTH  = 100;
+};
+
 var Grid = function() {
   this.canvas = document.getElementById("grid");
-  this.map = [ [0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0] ];
+  this._initailizeGrid();
 }
 
-Grid.prototype.find_free_block = function () {
-  var block = null;
-  var x = Math.floor(Math.random()*4);
-  var y = Math.floor(Math.random()*4);
-
-  while(this.map[x][y] != 0) {
-    x = Math.floor(Math.random()*4);
-    y = Math.floor(Math.random()*4);
+Grid.prototype._initailizeGrid = function() {
+  this.unfilled = [];
+  this.filled = [];
+  for(var row = 0; row < 4; row++) {
+    for(var column = 0; column < 4; column++) {
+      var block = new Block(row*100, column*100)
+      this.unfilled.push(block);
+    }
   }
+}
 
-  return [x*100,y*100];
-};
+Grid.prototype.popRandomUnfilledBlock = function() {
+  if (this.unfilled.length == 0)
+    throw new Error("No unfilled blocks to pop");
 
-Grid.prototype.draw_block = function () {
+  var index = Math.floor(Math.random()*this.unfilled.length);
+  var blockRef = this.unfilled[index];
+  var block = new Block(blockRef.x, blockRef.y);
+  this.unfilled.splice(index, 1);
+  return block;
+}
+
+Grid.prototype.drawRandomBlock = function () {
   var context = this.canvas.getContext("2d");
   context.fillStyle = "#8891d2";
-  var coordinates = this.find_free_block();
-  context.fillRect(coordinates[0], coordinates[1], 100, 100);
-};
 
-Grid.prototype.initialize = function (blocks) {
-  var context = this.canvas.getContext("2d");
-  context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  for(var i = 0; i <= blocks; i++) {
-    this.draw_block();
-  }
+  var block = this.popRandomUnfilledBlock();
+
+  context.fillRect(block.x, block.y, block.LENGTH, block.WIDTH);
+
+  this.filled.push(block);
 };

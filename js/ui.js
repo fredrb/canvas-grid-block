@@ -1,3 +1,3 @@
 function onUpdateClick() {
-  grid.initialize(4);
+  grid.drawRandomBlock();
 }
