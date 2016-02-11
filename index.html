@@ -8,6 +8,7 @@
 
 <script src="js/grid/canvas.js"></script>
 <script src="js/grid/grid.js"></script>
+
 <script>
     var YellowBlock = function() {
       this.color = "#d9c01d";
@@ -21,7 +22,7 @@
       this.destroy = function() { }
     }
 
-    grid = new Grid(5, 5);
+    grid = new Grid(5, 5, 100, 100);
     grid.initAutoDraw(600, [YellowBlock, BlueBlock]);
 </script>
 

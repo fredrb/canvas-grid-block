@@ -1,6 +1,3 @@
-var CELL_LENGTH = 100;
-var CELL_WIDTH = 100;
-
 // var Block = function() {}
 
 var Cell = function(x, y) {
@@ -9,9 +6,12 @@ var Cell = function(x, y) {
   this.content = null;
 }
 
-var Grid = function(mapLength, mapHeight) {
+var Grid = function(mapLength, mapHeight, cellWidth, cellHeight) {
   this.canvas = new CanvasControll(this);
   this.erased = 0;
+
+  this.CELL_WIDTH = cellWidth;
+  this.CELL_HEIGHT = cellHeight;
   this._initailizeGrid(mapLength, mapHeight);
 }
 
@@ -42,7 +42,7 @@ Grid.prototype.drawCellAt = function (x, y, content) {
   selectedCell.content = obj;
   this.filledCells.push(selectedCell);
 
-  this.canvas.drawCellAtPosition(x*100, y*100, CELL_LENGTH, CELL_WIDTH, obj);
+  this.canvas.drawCellAtPosition(x*this.CELL_WIDTH, y*this.CELL_HEIGHT, this.CELL_WIDTH, this.CELL_HEIGHT, obj);
 };
 
 Grid.prototype.eraseUglyCoordinatesCellAt = function (x, y) {
@@ -63,7 +63,7 @@ Grid.prototype.eraseCellAt = function (x, y) {
   selectedCell.content = null
   this.unfilledCells.push(selectedCell);
 
-  this.canvas.eraseCellAtPosition(x*100, y*100, CELL_LENGTH, CELL_WIDTH);
+  this.canvas.eraseCellAtPosition(x*this.CELL_WIDTH, y*this.CELL_HEIGHT, this.CELL_WIDTH, this.CELL_HEIGHT);
 
 };
 
