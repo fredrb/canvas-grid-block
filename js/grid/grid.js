@@ -1,7 +1,7 @@
 var CELL_LENGTH = 100;
 var CELL_WIDTH = 100;
 
-var Block = function() {}
+// var Block = function() {}
 
 var Cell = function(x, y) {
   this.x = x;
@@ -31,17 +31,18 @@ Grid.prototype._initailizeGrid = function(mapLength, mapHeight) {
   this.canvas.attachClickListener(this.onCanvasClick);
 };
 
-Grid.prototype.drawCellAt = function (x, y) {
+Grid.prototype.drawCellAt = function (x, y, content) {
+  var obj = new content();
   var selectedCell = this.map[x][y];
   if (selectedCell.content != null) {
     throw new Error("Cell " + [x,y] + " not empty");
   }
 
   this.unfilledCells.splice(this.unfilledCells.indexOf(selectedCell), 1);
-  selectedCell.content = new Block();
+  selectedCell.content = obj;
   this.filledCells.push(selectedCell);
 
-  this.canvas.drawCellAtPosition(x*100, y*100, CELL_LENGTH, CELL_WIDTH);
+  this.canvas.drawCellAtPosition(x*100, y*100, CELL_LENGTH, CELL_WIDTH, obj);
 };
 
 Grid.prototype.eraseUglyCoordinatesCellAt = function (x, y) {
@@ -58,10 +59,12 @@ Grid.prototype.eraseCellAt = function (x, y) {
   }
 
   this.filledCells.splice(this.filledCells.indexOf(selectedCell), 1);
+  selectedCell.content.destroy();
   selectedCell.content = null
   this.unfilledCells.push(selectedCell);
 
   this.canvas.eraseCellAtPosition(x*100, y*100, CELL_LENGTH, CELL_WIDTH);
+
 };
 
 Grid.prototype._getRandomUnfilledCell = function () {
@@ -81,7 +84,10 @@ Grid.prototype.onCanvasClick = function(event) {
   try {
     grid.eraseUglyCoordinatesCellAt(mousePos.x, mousePos.y);
   } catch(e) {
-    success = false;
+    if (e.message == "Cell already empty")
+      success = false;
+    else
+      throw e;
   }
 
   if (success) this.erased += 1;
@@ -96,14 +102,15 @@ function getMousePosition(canvas, event) {
   }
 };
 
-Grid.prototype.initAutoDraw = function (timer) {
+Grid.prototype.initAutoDraw = function (timer, contentList) {
   var self = this;
   if (this.unfilledCells.length > 0) {
+    var randomContent = contentList[Math.floor(Math.random()*contentList.length)];
     var randomCell = this._getRandomUnfilledCell();
-    this.drawCellAt(randomCell.x, randomCell.y);
+    this.drawCellAt(randomCell.x, randomCell.y, randomContent);
   }
 
   setTimeout(function() {
-    self.initAutoDraw(timer);
+    self.initAutoDraw(timer, contentList);
   }, timer);
 };

@@ -3,11 +3,10 @@ var CanvasControll = function(grid) {
   this.canvas = document.getElementById("grid");
 }
 
-CanvasControll.prototype.drawCellAtPosition = function (x, y, sizeX, sizeZ) {
+CanvasControll.prototype.drawCellAtPosition = function (x, y, sizeX, sizeZ, content) {
   var context = this.canvas.getContext("2d");
 
-  // TODO: This should be set by Block content
-  context.fillStyle = "#8891d2";
+  context.fillStyle = content.color;
 
   context.fillRect(x, y, sizeX, sizeZ);
 };

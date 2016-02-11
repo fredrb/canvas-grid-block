@@ -9,10 +9,21 @@
 <script src="js/grid/canvas.js"></script>
 <script src="js/grid/grid.js"></script>
 <script>
-    grid = new Grid(5, 5);
-    grid.initAutoDraw(1250);
-</script>
+    var YellowBlock = function() {
+      this.color = "#d9c01d";
+      this.destroy = function() {
+        alert("Block destroyed!");
+      }
+    }
 
+    var BlueBlock = function() {
+      this.color = "#021a95";
+      this.destroy = function() { }
+    }
+
+    grid = new Grid(5, 5);
+    grid.initAutoDraw(600, [YellowBlock, BlueBlock]);
+</script>
 
 </div>
 </body>
