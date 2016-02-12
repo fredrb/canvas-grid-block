@@ -94,23 +94,28 @@ Grid.prototype.onCanvasClick = function(event) {
 
 }
 
+Grid.prototype.eraseRandomCell = function () {
+  var randomCell = this._getRandomFilledCell();
+  this.eraseCellAt(randomCell.x, randomCell.y);
+};
+
+Grid.prototype.initAutoDraw = function (timer, contentList) {
+  var self = this;
+  setTimeout(function() {
+    if (self.unfilledCells.length > 0) {
+      var randomContent = contentList[Math.floor(Math.random()*contentList.length)];
+      var randomCell = self._getRandomUnfilledCell();
+      self.drawCellAt(randomCell.x, randomCell.y, randomContent);
+    }
+
+    self.initAutoDraw(timer, contentList);
+  }, timer);
+};
+
 function getMousePosition(canvas, event) {
   var rect = canvas.getBoundingClientRect();
   return {
     x: event.clientX - rect.left,
     y: event.clientY - rect.top
   }
-};
-
-Grid.prototype.initAutoDraw = function (timer, contentList) {
-  var self = this;
-  if (this.unfilledCells.length > 0) {
-    var randomContent = contentList[Math.floor(Math.random()*contentList.length)];
-    var randomCell = this._getRandomUnfilledCell();
-    this.drawCellAt(randomCell.x, randomCell.y, randomContent);
-  }
-
-  setTimeout(function() {
-    self.initAutoDraw(timer, contentList);
-  }, timer);
 };
