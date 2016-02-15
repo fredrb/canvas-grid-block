@@ -10,10 +10,10 @@ var Grid = function(id, gridConfig) {
   this.canvas = new CanvasControll(id, this);
   this.CELL_WIDTH = gridConfig.cellWidth;
   this.CELL_HEIGHT = gridConfig.cellHeight;
-  this._initailizeGrid(gridConfig.mapWidth, gridConfig.mapHeight);
+  this._initailizeGrid(gridConfig.mapWidth, gridConfig.mapHeight, gridConfig.cellBorder);
 }
 
-Grid.prototype._initailizeGrid = function(mapLength, mapHeight) {
+Grid.prototype._initailizeGrid = function(mapLength, mapHeight, cellBorder) {
   this.unfilledCells = [ ];
   this.filledCells   = [ ];
   this.map           = [ ];
@@ -27,6 +27,10 @@ Grid.prototype._initailizeGrid = function(mapLength, mapHeight) {
   }
 
   this.canvas.attachClickListener(this.onCanvasClick);
+  if (cellBorder) {
+    this.canvas.drawGridBorders(cellBorder);
+    this.canvas.drawGridLines(mapLength, mapHeight, this.CELL_WIDTH, this.CELL_HEIGHT, cellBorder);
+  }
 };
 
 Grid.prototype.drawCellAt = function (x, y, content) {
@@ -96,6 +100,11 @@ Grid.prototype.eraseRandomCell = function () {
   var randomCell = this._getRandomFilledCell();
   this.eraseCellAt(randomCell.x, randomCell.y);
 };
+
+Grid.prototype.drawRandomCell = function(block) {
+  var randomCell = this._getRandomUnfilledCell();
+  this.drawCellAt(randomCell.x, randomCell.y, block);
+}
 
 Grid.prototype.initAutoDraw = function (timer, contentList) {
   var self = this;

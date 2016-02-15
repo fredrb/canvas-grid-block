@@ -1,6 +1,35 @@
 var CanvasControll = function(id, grid) {
   this.grid = grid;
   this.canvas = document.getElementById(id);
+  this.context = this.canvas.getContext("2d");
+}
+
+CanvasControll.prototype.drawGridLines = function(mapWidth, mapHeight, cellSizeWidth, cellSizeHeight, config) {
+  for (var column = 0; column < this.canvas.clientWidth; column += cellSizeWidth) {
+    this.context.beginPath();
+    this.context.lineWidth = config.size;
+    this.context.strokeStyle = config.color;
+    this.context.moveTo(column, 0);
+    this.context.lineTo(column, this.canvas.clientHeight);
+    this.context.stroke();
+  }
+
+  for(var row = 0; row < this.canvas.clientHeight; row += cellSizeHeight) {
+    this.context.beginPath();
+    this.context.lineWidth = config.size;
+    this.context.strokeStyle = config.color;
+    this.context.moveTo(0, row);
+    this.context.lineTo(this.canvas.clientWidth, row);
+    this.context.stroke();
+  }
+}
+
+CanvasControll.prototype.drawGridBorders = function(config) {
+  this.context.beginPath();
+  this.context.lineWidth = config.size;
+  this.context.strokeStyle = config.color;
+  this.context.rect(0, 0, this.context.canvas.clientWidth, this.context.canvas.clientHeight);
+  this.context.stroke();
 }
 
 CanvasControll.prototype.drawCellAtPosition = function (x, y, sizeX, sizeZ, content) {
@@ -33,10 +62,10 @@ var Grid = function(id, gridConfig) {
   this.canvas = new CanvasControll(id, this);
   this.CELL_WIDTH = gridConfig.cellWidth;
   this.CELL_HEIGHT = gridConfig.cellHeight;
-  this._initailizeGrid(gridConfig.mapWidth, gridConfig.mapHeight);
+  this._initailizeGrid(gridConfig.mapWidth, gridConfig.mapHeight, gridConfig.cellBorder);
 }
 
-Grid.prototype._initailizeGrid = function(mapLength, mapHeight) {
+Grid.prototype._initailizeGrid = function(mapLength, mapHeight, cellBorder) {
   this.unfilledCells = [ ];
   this.filledCells   = [ ];
   this.map           = [ ];
@@ -50,6 +79,10 @@ Grid.prototype._initailizeGrid = function(mapLength, mapHeight) {
   }
 
   this.canvas.attachClickListener(this.onCanvasClick);
+  if (cellBorder) {
+    this.canvas.drawGridBorders(cellBorder);
+    this.canvas.drawGridLines(mapLength, mapHeight, this.CELL_WIDTH, this.CELL_HEIGHT, cellBorder);
+  }
 };
 
 Grid.prototype.drawCellAt = function (x, y, content) {
@@ -119,6 +152,11 @@ Grid.prototype.eraseRandomCell = function () {
   var randomCell = this._getRandomFilledCell();
   this.eraseCellAt(randomCell.x, randomCell.y);
 };
+
+Grid.prototype.drawRandomCell = function(block) {
+  var randomCell = this._getRandomUnfilledCell();
+  this.drawCellAt(randomCell.x, randomCell.y, block);
+}
 
 Grid.prototype.initAutoDraw = function (timer, contentList) {
   var self = this;
