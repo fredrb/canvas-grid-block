@@ -1,0 +1,23 @@
+{
+  "name": "canvas-grid-blocks",
+  "version": "0.1.0",
+  "homepage": "https://github.com/fredrb/canvas-grid-block",
+  "authors": [
+    "Frederico <fred.rbittencourt@gmail.com>"
+  ],
+  "description": "Canvas Grid library",
+  "keywords": [
+    "canvas",
+    "game",
+    "grid",
+    "block"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
