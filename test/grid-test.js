@@ -1,6 +1,6 @@
 describe('Grid test', function() {
 
-  context('draw cell at', function() {
+  context('draw cells', function() {
     var defaultContent = function() {
       this.color = "#000",
       this.destroy = function(){}
@@ -30,8 +30,8 @@ describe('Grid test', function() {
       grid = new Grid('grid', {
         cellWidth : 50,
         cellHeight : 50,
-        mapWidth : 50,
-        mapHeight : 100
+        mapWidth : 2,
+        mapHeight : 2
       });
 
       context = mockCanvas.getContext("2d");
@@ -81,6 +81,32 @@ describe('Grid test', function() {
       expect(imagediff.equal(gridCanvas, mockCanvas)).to.eql(true);
     });
 
+    it('should draw 4 random cells', function() {
+      grid.drawRandomCell(defaultContent);
+      grid.drawRandomCell(defaultContent);
+      grid.drawRandomCell(defaultContent);
+      grid.drawRandomCell(defaultContent);
+
+      var context = mockCanvas.getContext("2d");
+      context.fillStyle = "#000";
+      context.fillRect(0, 0, 100, 100);
+
+      expect(imagediff.equal(gridCanvas, mockCanvas)).to.eql(true);
+    });
+
+    it('should initialize auto draw', function() {
+      grid.initAutoDraw(1, [defaultContent()]);
+
+      var context = mockCanvas.getContext("2d");
+      context.fillStyle = "#000";
+      context.fillRect(0, 0, 100, 100);
+
+      setTimeout(function() {
+        expect(imagediff.equal(gridCanvas, mockCanvas)).to.eql(true);
+        done();
+      }, 10);
+
+    })
 
   });
 
