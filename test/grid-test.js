@@ -27,7 +27,12 @@ describe('Grid test', function() {
       gridCanvas = document.getElementById('grid');
       mockCanvas = document.getElementById('mockCanvas');
 
-      grid = new Grid(2, 2, 50, 50);
+      grid = new Grid('grid', {
+        cellWidth : 50,
+        cellHeight : 50,
+        mapWidth : 50,
+        mapHeight : 100
+      });
 
       context = mockCanvas.getContext("2d");
 

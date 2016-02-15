@@ -1,6 +1,6 @@
-var CanvasControll = function(grid) {
+var CanvasControll = function(id, grid) {
   this.grid = grid;
-  this.canvas = document.getElementById("grid");
+  this.canvas = document.getElementById(id);
 }
 
 CanvasControll.prototype.drawCellAtPosition = function (x, y, sizeX, sizeZ, content) {
@@ -29,13 +29,11 @@ var Cell = function(x, y) {
   this.content = null;
 }
 
-var Grid = function(mapLength, mapHeight, cellWidth, cellHeight) {
-  this.canvas = new CanvasControll(this);
-  this.erased = 0;
-
-  this.CELL_WIDTH = cellWidth;
-  this.CELL_HEIGHT = cellHeight;
-  this._initailizeGrid(mapLength, mapHeight);
+var Grid = function(id, gridConfig) {
+  this.canvas = new CanvasControll(id, this);
+  this.CELL_WIDTH = gridConfig.cellWidth;
+  this.CELL_HEIGHT = gridConfig.cellHeight;
+  this._initailizeGrid(gridConfig.mapWidth, gridConfig.mapHeight);
 }
 
 Grid.prototype._initailizeGrid = function(mapLength, mapHeight) {

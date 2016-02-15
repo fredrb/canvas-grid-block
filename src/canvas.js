@@ -1,6 +1,6 @@
-var CanvasControll = function(grid) {
+var CanvasControll = function(id, grid) {
   this.grid = grid;
-  this.canvas = document.getElementById("grid");
+  this.canvas = document.getElementById(id);
 }
 
 CanvasControll.prototype.drawCellAtPosition = function (x, y, sizeX, sizeZ, content) {
